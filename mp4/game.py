@@ -1,9 +1,20 @@
+from ball import *
+from paddle import *
 
 
 class game(object):
-	"""
-	game class
-	"""
+	""" game class """
 	def __init__(self):
-		self.paddle_height = 0.2
-		self.state = (0.5, 0.5, 0.03, 0.01, 0.5-self.paddle_height/2)
+		self.ball = ball()
+		self.paddle = paddle()
+		self.score = 0
+		self.state = (self.ball.x, self.ball.y, self.ball.v_x, self.ball.v_y, self.paddle.y)
+
+	def update(self):
+		self.paddle.update()
+		self.ball.update()
+		self.state = (self.ball.x, self.ball.y, self.ball.v_x, self.ball.v_y, self.paddle.y)
+		
+
+
+

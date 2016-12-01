@@ -22,11 +22,14 @@ RED = (255,0,0)
 def drawArena():
 	DISPLAYSURF.fill(WHITE)
 
-def drawBall(ball):
+def drawBall(ball, game):
 	pygame.draw.rect(DISPLAYSURF, RED, ball)
+	ball.x = scaleBall(game.ball.x)
+	ball.y = scaleBall(game.ball.y)
 
-def drawPaddle(paddle):
+def drawPaddle(paddle, game):
 	pygame.draw.rect(DISPLAYSURF, BLACK, paddle)
+	paddle.y = scaleBall(game.paddle.y)
 
 def drawWall(wall):
 	pygame.draw.rect(DISPLAYSURF, BLACK, wall)
@@ -59,7 +62,7 @@ if __name__=='__main__':
 	# paddle
 	paddle_x = scalePaddle(1.0)
 	paddle_y = scalePaddle(game.state[4])
-	paddle_height = scaleWall(game.paddle_height)
+	paddle_height = scaleWall(game.paddle.height)
 	paddle = pygame.Rect(paddle_x, paddle_y, LINETHICKNESS, paddle_height)
 	# wall
 	wall_x = scaleWall(0.0)
@@ -68,8 +71,8 @@ if __name__=='__main__':
 
 	# draw game
 	drawArena()
-	drawBall(ball)
-	drawPaddle(paddle)
+	drawBall(ball, game)
+	drawPaddle(paddle, game)
 	drawWall(wall)
 
 	while True: # main game loop
@@ -78,6 +81,12 @@ if __name__=='__main__':
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
+
+		# update game
+		game.update()
+		drawBall(ball, game)
+		drawPaddle(paddle, game)
+
 		# update the screen
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
