@@ -28,9 +28,13 @@ class paddle(object):
 			self.y += 0.02
 		self.check()
 
+	def qlearn(self, action):
+		self.y += actions*0.04
+		self.check()
+
 	def update(self, ball_y):
 		if self.agent == 'qlearning':
-			self.random()
+			self.qlearn(ball_y)
 		elif self.agent == 'hardcode':
 			self.hardcode(ball_y)
 		else:

@@ -4,24 +4,31 @@ from qlearning import *
 import math
 
 
-class game(object):
-	""" game class """
+class pong(object):
+	""" game pong """
 	def __init__(self):
 		self.ball = ball()
 		self.paddle = paddle('hardcode')
-		self.score = 0
+		self.qlearning = qlearning(epsilon=0.1, alpha=0.2, gamma=0.9)
 		self.state = (self.ball.x, self.ball.y, self.ball.v_x, self.ball.v_y, self.paddle.y)
+		self.lastState = None
+		self.lastAction = None
+		self.success = 0
+		self.lose = 0
+		self.hit = False
 		self.termination = False
 
+
 	def terminate(self):
-		self.score -= 1
+		self.lose += 1
 		self.termination = True
 
 	def check(self):
 		if self.ball.x > self.paddle.x:
 			if self.ball.y > self.paddle.y and self.ball.y < self.paddle.y + self.paddle.height:
 				self.ball.hit()
-				self.score += 1
+				self.success += 1
+				self.hit = True
 			else:
 				self.terminate()
 
@@ -45,11 +52,11 @@ class game(object):
 			self.state = (discrete_ball_x, discrete_ball_y, x_velocity, y_velocity, discrete_paddle)
 
 	def update(self):
+		state = updateState()
 		self.ball.update()
-		self.paddle.update(self.ball.y)
 		self.check()
+		self.paddle.update(self.ball.y)
 		self.updateState()
-		print self.state
 		
 
 

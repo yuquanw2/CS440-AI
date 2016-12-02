@@ -1,6 +1,7 @@
 import pygame, sys
 from pygame.locals import *
 from game import *
+import atexit
 
 # Source for drawing
 # http://trevorappleton.blogspot.com/2014/04/writing-pong-using-python-and-pygame.html
@@ -54,7 +55,7 @@ if __name__=='__main__':
 	pygame.display.set_caption('CS440AI_MP4 - Pong Game - Bangqi Wang')
 	
 	# initialize game
-	game = game()
+	game = pong()
 	# ball
 	ball_x = scaleBall(game.state[0])
 	ball_y = scaleBall(game.state[1])
@@ -85,7 +86,9 @@ if __name__=='__main__':
 		# update game
 		game.update()
 		if game.termination:
-			break
+			print game.success
+			print game.lose
+			game = pong()
 		drawArena()
 		drawBall(ball, game)
 		drawWall(wall)
@@ -94,6 +97,5 @@ if __name__=='__main__':
 		# update the screen
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
-	print game.score
 
 
