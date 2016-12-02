@@ -85,10 +85,10 @@ if __name__=='__main__':
 
 		# update game
 		game.update()
-		if game.termination:
-			print game.success
-			print game.lose
-			game = pong()
+		# if game.termination:
+		# 	print game.success
+		# 	print game.lose
+		# 	game = pong()
 		drawArena()
 		drawBall(ball, game)
 		drawWall(wall)

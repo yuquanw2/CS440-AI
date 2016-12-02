@@ -34,7 +34,7 @@ class pong(object):
 
 	def updateState(self):
 		if self.termination:
-			self.state = (12,12,12,12,12)
+			return (12,12,12,12,12)
 		else:
 			if self.ball.v_x > 0:
 				x_velocity = 1
@@ -49,12 +49,27 @@ class pong(object):
 			discrete_ball_x = min(11, int(math.floor(12 * self.ball.x)))
 			discrete_ball_y = min(11, int(math.floor(12 * self.ball.y)))
 			discrete_paddle = min(11, int(math.floor(12 * self.paddle.y / (1 - self.paddle.height))))
-			self.state = (discrete_ball_x, discrete_ball_y, x_velocity, y_velocity, discrete_paddle)
+			return (discrete_ball_x, discrete_ball_y, x_velocity, y_velocity, discrete_paddle)
 
 	def update(self):
-		state = updateState()
 		self.ball.update()
 		self.check()
+		self.updateState()
+		reward = 0
+
+		if self.termination:
+			# reward = -1
+			# if self.lastState is not None:
+			# 	self.qlearning.learn(self.lastState, self.lastAction, reward, state)
+			# self.lastState = None
+			self.ball = ball()
+			self.paddle = paddle('hardcode')
+			self.termination = False
+			print self.success
+			print self.lose
+			return
+		if self.hit:
+			self.hit = False
 		self.paddle.update(self.ball.y)
 		self.updateState()
 		
