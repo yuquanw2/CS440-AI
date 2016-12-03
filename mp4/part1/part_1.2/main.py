@@ -1,16 +1,23 @@
 import pygame, sys
 from pygame.locals import *
-from pong import *
 import atexit
 import signal
 import sys
 import matplotlib.pyplot as plt
+# 1 player
+# from pong import *
+# 2 players
+from pongtwo import *
+
+PLAYER = 2
+
 
 MODE = 'train'
 # MODE = 'play'
 
 # initialize game
-game = pong()
+# game = pong()
+game = pongtwo()
 # game.loadWeight()
 
 def draw():
@@ -24,6 +31,7 @@ def draw():
 	line_y = [9,9]
 	f,ax = plt.subplots()
 	ax.plot(game.x, game.y, 'b', label='Average Bounce')
+	ax.plot(game.x, game.winrate, 'g', label='Winning Rate')
 	ax.plot(line_x, line_y, 'r', label='9')
 	plt.ylabel('average number of rebounce')
 	plt.xlabel('the number of games')
@@ -65,7 +73,11 @@ def drawBall(ball, game):
 	pygame.draw.rect(DISPLAYSURF, RED, ball)
 
 def drawPaddle(paddle, game):
-	paddle.y = scaleBall(game.paddle.y)
+	paddle.y = scaleBall(game.paddle1.y)
+	pygame.draw.rect(DISPLAYSURF, BLACK, paddle)
+
+def drawPaddle2(paddle, game):
+	paddle.y = scaleWall(game.paddle2.y)
 	pygame.draw.rect(DISPLAYSURF, BLACK, paddle)
 
 def drawWall(wall):
@@ -101,11 +113,16 @@ if __name__=='__main__':
 		ball_x = scaleBall(game.state[0])
 		ball_y = scaleBall(game.state[1])
 		ball = pygame.Rect(ball_x, ball_y, LINETHICKNESS, LINETHICKNESS)
-		# paddle
+		# paddle1
 		paddle_x = scalePaddle(1.0)
 		paddle_y = scalePaddle(game.state[4])
-		paddle_height = scaleWall(game.paddle.height)
+		paddle_height = scaleWall(game.paddle1.height)
 		paddle = pygame.Rect(paddle_x, paddle_y, LINETHICKNESS, paddle_height)
+		# paddle2
+		paddle2x = scaleWall(0.0)
+		paddle2_y = scaleWall(game.paddle2.y)
+		paddle2_height = scaleWall(game.paddle2.height)
+		paddle2 = pygame.Rect(paddle2x, paddle2_y, LINETHICKNESS, paddle2_height)
 		# wall
 		wall_x = scaleWall(0.0)
 		wall_y = scaleWall(0.0)
@@ -115,7 +132,8 @@ if __name__=='__main__':
 		drawArena()
 		drawBall(ball, game)
 		drawPaddle(paddle, game)
-		drawWall(wall)
+		drawPaddle2(paddle2, game)
+		# drawWall(wall)
 
 		while True: # main game loop
 			for event in pygame.event.get():
@@ -132,7 +150,8 @@ if __name__=='__main__':
 			# 	game = pong()
 			drawArena()
 			drawBall(ball, game)
-			drawWall(wall)
+			# drawWall(wall)
+			drawPaddle2(paddle2, game)
 			drawPaddle(paddle, game)
 
 			# update the screen

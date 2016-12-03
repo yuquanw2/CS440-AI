@@ -4,7 +4,7 @@ from qlearning import *
 import math
 
 
-ALPHA = 30
+ALPHA = 50
 GAMMA = 0.7
 EPSILON = 0.05
 ROUND = 100000
@@ -81,9 +81,9 @@ class pong(object):
 				x_velocity = 1
 			else:
 				x_velocity = -1
-			if self.ball.v_y >= 0.015:
+			if self.ball.v_y >= 0.02:
 				y_velocity = 1
-			elif self.ball.v_y <= 0.015:
+			elif self.ball.v_y <= 0.02:
 				y_velocity = -1
 			else:
 				y_velocity = 0
