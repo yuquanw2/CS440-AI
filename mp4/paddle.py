@@ -29,7 +29,7 @@ class paddle(object):
 		self.check()
 
 	def qlearn(self, action):
-		self.y += actions*0.04
+		self.y += action*0.04
 		self.check()
 
 	def update(self, ball_y):
